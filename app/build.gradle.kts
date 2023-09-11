@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.gct.clandroid"
+    namespace = "com.gct.cl.android"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.gct.clandroid"
+        applicationId = "com.gct.cl.android"
         minSdk = 27
         targetSdk = 34
         versionCode = 1
@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

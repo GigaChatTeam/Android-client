@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Android"
+rootProject.name = "Android client for GigaChat"
 include(":app")
- 
