@@ -1,5 +1,6 @@
 package com.gct.cl.android
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -9,5 +10,9 @@ class Loader : AppCompatActivity() {
         setContentView(R.layout.activity_loader)
 
         supportActionBar?.hide()
+
+        val intents = Intent(this, ActivityMain::class.java)
+
+        startActivity(intents)
     }
 }

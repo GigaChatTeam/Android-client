@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
     implementation("org.java-websocket:Java-WebSocket:1.5.4")
+    implementation(libs.androidx.ui.graphics.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
