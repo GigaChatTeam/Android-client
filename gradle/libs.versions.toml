@@ -11,6 +11,10 @@ constraintlayout = "2.1.4"
 jsoniter = "0.9.23"
 ktor-client-android = "2.3.4"
 ktor-client-core = "2.3.4"
+kotlinx-serialization-json = "1.6.0"
+ktor-client-core = "2.3.4"
+ktor-client-android = "2.3.4"
+ui-graphics-android = "1.5.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -23,6 +27,8 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 jsoniter = { group = "com.jsoniter", name = "jsoniter", version.ref = "jsoniter" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor-client-android" }
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-client-core" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "ui-graphics-android" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
