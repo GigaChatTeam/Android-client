@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha03"
+agp = "8.3.0-alpha06"
 kotlin = "1.9.0"
 core-ktx = "1.10.1"
 junit = "4.13.2"
@@ -8,6 +8,9 @@ espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.9.0"
 constraintlayout = "2.1.4"
+jsoniter = "0.9.23"
+ktor-client-android = "2.3.4"
+ktor-client-core = "2.3.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -17,6 +20,9 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+jsoniter = { group = "com.jsoniter", name = "jsoniter", version.ref = "jsoniter" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor-client-android" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor-client-core" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
