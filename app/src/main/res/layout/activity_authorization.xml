@@ -7,11 +7,11 @@
     tools:context=".ActivityAuthorization">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText"
+        android:id="@+id/activityAuthorization_widgets_inputLogin"
         android:layout_width="254dp"
         android:layout_height="49dp"
         android:hint="@string/authorization_widgets_inputLogin"
-        app:layout_constraintBottom_toTopOf="@+id/textInputEditText2"
+        app:layout_constraintBottom_toTopOf="@+id/activityAuthorization_widgets_inputPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.935" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInputEditText2"
+        android:id="@+id/activityAuthorization_widgets_inputPassword"
         android:layout_width="254dp"
         android:layout_height="49dp"
         android:layout_marginBottom="400dp"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/activityAuthorization_widgets_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -39,10 +39,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/debugView"
         android:layout_width="256dp"
         android:layout_height="128dp"
         android:layout_marginBottom="120dp"
@@ -58,8 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="@string/authorization_widgets_showPassword_enable"
-        app:layout_constraintEnd_toEndOf="@+id/textInputEditText2"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText2" />
+        app:layout_constraintEnd_toEndOf="@+id/activityAuthorization_widgets_inputPassword"
+        app:layout_constraintStart_toEndOf="@+id/activityAuthorization_widgets_login"
+        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

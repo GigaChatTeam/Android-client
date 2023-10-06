@@ -35,15 +35,15 @@ class ActivityAuthorization : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @OptIn(DelicateCoroutinesApi::class)
     private fun binder() {
-        val text = findViewById<TextView>(R.id.textView2)
-        val login = findViewById<TextInputEditText>(R.id.textInputEditText)
-        val pass = findViewById<TextInputEditText>(R.id.textInputEditText2)
-        val button = findViewById<Button>(R.id.button)
+        val debugView = findViewById<TextView>(R.id.debugView)
+        val inputLogin = findViewById<TextInputEditText>(R.id.activityAuthorization_widgets_inputLogin)
+        val inputPassword = findViewById<TextInputEditText>(R.id.activityAuthorization_widgets_inputPassword)
+        val buttonLogIn = findViewById<Button>(R.id.activityAuthorization_widgets_login)
 
         val showPassword = findViewById<CheckBox>(R.id.activityAuthorization_widgets_showPassword)
 
-        button.setOnClickListener {
-            text.text = "Жопа Взломана"
+        buttonLogIn.setOnClickListener {
+            debugView.text = "Жопа Взломана"
             GlobalScope.launch(Dispatchers.IO) {
                 val response: HttpResponse =
                     httpClient.request(
@@ -51,24 +51,24 @@ class ActivityAuthorization : AppCompatActivity() {
                     ) {
                         method = HttpMethod.Get
                         url {
-                            parameters.append("username", login.text.toString())
-                            parameters.append("password", pass.text.toString())
+                            parameters.append("username", inputLogin.text.toString())
+                            parameters.append("password", inputPassword.text.toString())
                         }
                     }
-                text.text = "Done!"
+                debugView.text = "Done!"
                 val data =
-                    JsonIterator.deserialize(response.bodyAsText()).asMap().get("auth-data")!!.asMap()
-                val token = data.get("token")!!
-                val id = data.get("id")!!.toInt()
-                text.text = "token: $token\nid: $id"
+                    JsonIterator.deserialize(response.bodyAsText()).asMap()["auth-data"]!!.asMap()
+                val token = data["token"]!!
+                val id = data["id"]!!.toInt()
+                debugView.text = "id: $id\ntoken: $token"
             }
         }
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pass.setInputType(InputType.TYPE_CLASS_TEXT)
+                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             } else {
-                pass.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
             }
         }
     }
