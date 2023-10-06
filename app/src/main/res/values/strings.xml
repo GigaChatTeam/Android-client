@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Android client for GigaChat</string>
+    <string name="app_name" translatable="false">GigaChat</string>
+    <string name="authorization_widgets_logIn">Log in</string>
+    <string name="authorization_widgets_showPassword_enable">Show password</string>
+    <string name="authorization_widgets_showPassword_disable">Hide password</string>
+    <string name="authorization_widgets_inputLogin">Input login here</string>
+    <string name="authorization_widgets_inputPassword">Input password here</string>
 </resources>

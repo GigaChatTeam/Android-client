@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authorization_widgets_logIn">Войти</string>
+    <string name="authorization_widgets_showPassword_enable">Показать пароль</string>
+    <string name="authorization_widgets_showPassword_disable">Скрыть пароль</string>
+    <string name="authorization_widgets_inputLogin">Введите логин</string>
+    <string name="authorization_widgets_inputPassword">Введите пароль</string>
+</resources>

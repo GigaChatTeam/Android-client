@@ -1,15 +1,15 @@
 package com.gct.cl.android
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.jsoniter.JsonIterator
 import io.ktor.client.HttpClient
-import io.ktor.client.request.get
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -26,18 +26,21 @@ class ActivityAuthorization : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authorization)
+
         supportActionBar?.hide()
-        login()
+
+        binder()
     }
 
     @SuppressLint("SetTextI18n")
     @OptIn(DelicateCoroutinesApi::class)
-    private fun login() {
+    private fun binder() {
         val text = findViewById<TextView>(R.id.textView2)
         val login = findViewById<TextInputEditText>(R.id.textInputEditText)
         val pass = findViewById<TextInputEditText>(R.id.textInputEditText2)
         val button = findViewById<Button>(R.id.button)
 
+        val showPassword = findViewById<CheckBox>(R.id.activityAuthorization_widgets_showPassword)
 
         button.setOnClickListener {
             text.text = "Жопа Взломана"
@@ -61,5 +64,12 @@ class ActivityAuthorization : AppCompatActivity() {
             }
         }
 
+        showPassword.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                pass.setInputType(InputType.TYPE_CLASS_TEXT)
+            } else {
+                pass.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            }
+        }
     }
 }
