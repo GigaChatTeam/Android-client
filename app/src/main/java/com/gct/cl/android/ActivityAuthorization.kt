@@ -47,12 +47,12 @@ class ActivityAuthorization : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.IO) {
                 val response: HttpResponse =
                     httpClient.request(
-                        "http://192.168.196.60:8082/auth"
+                        URLS.AUTHORIZATION
                     ) {
                         method = HttpMethod.Get
                         url {
-                            parameters.append("username", inputLogin.text.toString())
-                            parameters.append("password", inputPassword.text.toString())
+                            parameters.append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
+                            parameters.append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
                         }
                     }
                 debugView.text = "Done!"
