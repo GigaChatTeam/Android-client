@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 
 class ActivityAuthorization : AppCompatActivity() {
-    val httpClient = HttpClient()
+    private val httpClient = HttpClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
