@@ -6,7 +6,7 @@ com_crashlytics_export_strings.xml
 
 # Local configuration file (sdk path, etc)
 local.properties
-android/local.properties
+*/local.properties
 .android/local.properties
 
 # Gradle generated files
