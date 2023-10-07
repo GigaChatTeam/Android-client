@@ -23,6 +23,12 @@ import kotlinx.coroutines.launch
 class ActivityAuthorization : AppCompatActivity() {
     private val httpClient = HttpClient()
 
+    private lateinit var debugView: TextView
+    private lateinit var inputLogin: TextInputEditText
+    private lateinit var inputPassword: TextInputEditText
+    private lateinit var buttonLogIn: Button
+    private lateinit var showPassword: CheckBox
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authorization)
@@ -35,12 +41,12 @@ class ActivityAuthorization : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @OptIn(DelicateCoroutinesApi::class)
     private fun binder() {
-        val debugView = findViewById<TextView>(R.id.debugView)
-        val inputLogin = findViewById<TextInputEditText>(R.id.activityAuthorization_widgets_inputLogin)
-        val inputPassword = findViewById<TextInputEditText>(R.id.activityAuthorization_widgets_inputPassword)
-        val buttonLogIn = findViewById<Button>(R.id.activityAuthorization_widgets_login)
+        debugView = findViewById(R.id.debugView)
+        inputLogin = findViewById(R.id.activityAuthorization_widgets_inputLogin)
+        inputPassword = findViewById(R.id.activityAuthorization_widgets_inputPassword)
+        buttonLogIn = findViewById(R.id.activityAuthorization_widgets_login)
 
-        val showPassword = findViewById<CheckBox>(R.id.activityAuthorization_widgets_showPassword)
+        showPassword = findViewById(R.id.activityAuthorization_widgets_showPassword)
 
         buttonLogIn.setOnClickListener {
             debugView.text = "Жопа Взломана"
@@ -68,7 +74,8 @@ class ActivityAuthorization : AppCompatActivity() {
             if (isChecked) {
                 inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             } else {
-                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                inputPassword.setInputType(InputType.TYPE_CLASS_TEXT
+                        or InputType.TYPE_TEXT_VARIATION_PASSWORD)
             }
         }
     }
