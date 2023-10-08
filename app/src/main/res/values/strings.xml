@@ -5,4 +5,9 @@
     <string name="authorization_widgets_showPassword_disable">Hide password</string>
     <string name="authorization_widgets_inputLogin">Input login here</string>
     <string name="authorization_widgets_inputPassword">Input password here</string>
+    <string name="authorization_widgets_responseStatus_connectionRefused">The server is not responding. Please try again later.</string>
+    <string name="authorization_widgets_responseStatus_userNotFound">Invalid username or password</string>
+    <string name="authorization_widgets_responseStatus_notValidLogin">Invalid login. Please check the input.</string>
+    <string name="authorization_widgets_responseStatus_notValidPassword">Invalid password. Please check the input.</string>
+    <string name="authorization_widgets_responseStatus_responseError">An internal error has occurred. Contact customer support.</string>
 </resources>
