@@ -8,6 +8,7 @@
     <string name="authorization_widgets_responseStatus_connectionRefused">Сервер не отвечает. Пожалуйста, повторите попытку позднее.</string>
     <string name="authorization_widgets_responseStatus_userNotFound">Неверный логин или пароль</string>
     <string name="authorization_widgets_responseStatus_notValidLogin">Неверный логин. Пожалуйста, проверьте ввод.</string>
-    <string name="authorization_widgets_responseStatus_notValidPassword">Неверныйпароль. Пожалуйста, проверьте ввод.</string>
+    <string name="authorization_widgets_responseStatus_notValidPassword">Неверный пароль. Пожалуйста, проверьте ввод.</string>
     <string name="authorization_widgets_responseStatus_responseError">Произошла внутренняя ошибка. Пожалуйста, свяжитесь со службой поддержки.</string>
+    <string name="authorization_widgets_responseStatus_tooManyRequests">Пожалуйста, подождите перед повторной попыткой</string>
 </resources>

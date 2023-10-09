@@ -6,7 +6,6 @@ public class ResponsePackets {
         static class Authorization {
             static class Done {
                 String status;
-
                 AuthData data;
             }
             static class ClientError {

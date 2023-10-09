@@ -30,6 +30,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/activityAuthorization_widgets_responseStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/activityAuthorization_widgets_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
+
     <Button
         android:id="@+id/activityAuthorization_widgets_login"
         android:layout_width="wrap_content"
@@ -40,16 +49,6 @@
         app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
-
-    <TextView
-        android:id="@+id/debugView"
-        android:layout_width="256dp"
-        android:layout_height="128dp"
-        android:layout_marginBottom="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/activityAuthorization_widgets_showPassword"
@@ -62,12 +61,13 @@
         app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
 
     <TextView
-        android:id="@+id/activityAuthorization_widgets_responseStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/activityAuthorization_widgets_login"
+        android:id="@+id/debugView"
+        android:layout_width="256dp"
+        android:layout_height="128dp"
+        android:layout_marginBottom="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

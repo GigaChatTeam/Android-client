@@ -10,4 +10,5 @@
     <string name="authorization_widgets_responseStatus_notValidLogin">Invalid login. Please check the input.</string>
     <string name="authorization_widgets_responseStatus_notValidPassword">Invalid password. Please check the input.</string>
     <string name="authorization_widgets_responseStatus_responseError">An internal error has occurred. Contact customer support.</string>
+    <string name="authorization_widgets_responseStatus_tooManyRequests">Please wait before trying again</string>
 </resources>

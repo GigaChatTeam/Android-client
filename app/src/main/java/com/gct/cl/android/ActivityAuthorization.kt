@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
+import com.jsoniter.output.JsonStream
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -18,10 +20,17 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 
 class ActivityAuthorization : AppCompatActivity() {
-    private val httpClient = HttpClient()
+    private val httpClient = HttpClient() {
+        install(HttpTimeout) {
+            requestTimeoutMillis = 20000
+        }
+    }
+    private var blocked = false
 
     private lateinit var debugView: TextView
 
@@ -53,6 +62,13 @@ class ActivityAuthorization : AppCompatActivity() {
         responseStatusView = findViewById(R.id.activityAuthorization_widgets_responseStatus)
 
         buttonLogIn.setOnClickListener {
+            if (blocked) {
+                tooManyRequests()
+                return@setOnClickListener
+            } else blocked = true
+
+            responseStatusView.text = ""
+
             GlobalScope.launch(Dispatchers.IO) {
                 val response: HttpResponse =
                     httpClient.request(
@@ -74,8 +90,11 @@ class ActivityAuthorization : AppCompatActivity() {
                 when (response.status.value) {
                     200 -> completeAuthorization(response.bodyAsText())
                     404 -> userNotFound()
+                    429 -> tooManyRequests()
                     else -> unprocessedResponse()
                 }
+
+                blocked = false
             }
         }
 
@@ -91,23 +110,48 @@ class ActivityAuthorization : AppCompatActivity() {
             responseText,
             ResponsePackets.AC.Authorization.Done::class.java
         )
-
         try {
-            responseData?.apply {
-                debugView.text = "id: ${
-                    responseData.data.id
-                }\ntoken: ${responseData.data.token}"
-            } ?: unprocessedResponse()
-        } catch (_: NullPointerException) { unprocessedResponse() }
+            runOnUiThread {
+                responseData?.apply {
+                    debugView.text = "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
+                } ?: unprocessedResponse()
+            }
+            saveToken(responseData.data.id, responseData.data.token)
+        } catch (_: NullPointerException) {
+            unprocessedResponse()
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun userNotFound() {
-        responseStatusView.text = "123"
+        runOnUiThread {
+            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_userNotFound)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun unprocessedResponse() {
-        responseStatusView.text = "123"
+        runOnUiThread {
+            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_responseError)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun tooManyRequests() {
+        runOnUiThread {
+            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_tooManyRequests)
+        }
+    }
+
+    private fun saveToken(id: Long, token: String) {
+        val tokenFile = File(filesDir, "account_${id}.json")
+
+        FileOutputStream(tokenFile).write(
+            JsonStream.serialize(
+                mapOf(
+                    id to token
+                )
+            ).toByteArray()
+        )
     }
 }
