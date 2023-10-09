@@ -3,6 +3,7 @@ package com.gct.cl.android
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 
 
@@ -116,7 +118,7 @@ class ActivityAuthorization : AppCompatActivity() {
                     debugView.text = "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
                 } ?: unprocessedResponse()
             }
-            saveToken(responseData.data.id, responseData.data.token)
+            // saveToken(responseData.data.id, responseData.data.token)
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -143,15 +145,15 @@ class ActivityAuthorization : AppCompatActivity() {
         }
     }
 
-    private fun saveToken(id: Long, token: String) {
-        val tokenFile = File(filesDir, "account_${id}.json")
-
-        FileOutputStream(tokenFile).write(
-            JsonStream.serialize(
-                mapOf(
-                    id to token
-                )
-            ).toByteArray()
-        )
-    }
+//    private fun saveToken(id: Long, token: String) {
+//        val tokenFile = File(filesDir, "account_${id}.json")
+//
+//        FileOutputStream(tokenFile).write(
+//            JsonStream.serialize(
+//                mapOf(
+//                    id to token
+//                )
+//            ).toByteArray()
+//        )
+//    }
 }
