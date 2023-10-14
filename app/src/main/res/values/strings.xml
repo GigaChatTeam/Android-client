@@ -5,10 +5,11 @@
     <string name="authorization_widgets_showPassword_disable">Hide password</string>
     <string name="authorization_widgets_inputLogin">Input login here</string>
     <string name="authorization_widgets_inputPassword">Input password here</string>
-    <string name="authorization_widgets_responseStatus_connectionRefused">The server is not responding. Please try again later.</string>
+    <string name="authorization_widgets_responseStatus_connectionRefused">The server is not responding.\\nPlease try again later.</string>
     <string name="authorization_widgets_responseStatus_userNotFound">Invalid username or password</string>
     <string name="authorization_widgets_responseStatus_notValidLogin">Invalid login. Please check the input.</string>
-    <string name="authorization_widgets_responseStatus_notValidPassword">Invalid password. Please check the input.</string>
-    <string name="authorization_widgets_responseStatus_responseError">An internal error has occurred. Contact customer support.</string>
+    <string name="authorization_widgets_input_notValidPassword">Invalid password. Please check the input.</string>
+    <string name="authorization_widgets_responseStatus_responseError">An internal error has occurred.\\nContact customer support.</string>
     <string name="authorization_widgets_responseStatus_tooManyRequests">Please wait before trying again</string>
+    <string name="authorization_widgets_responseStatus_outdatedClient">Your application is outdated.\\nPlease check for updates.</string>
 </resources>

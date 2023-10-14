@@ -10,22 +10,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
-import com.jsoniter.output.JsonStream
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.request
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpMethod
+import io.ktor.util.InternalAPI
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 
+@OptIn(InternalAPI::class)
 class ActivityAuthorization : AppCompatActivity() {
     private val httpClient = HttpClient {
         install(HttpTimeout) {
@@ -72,22 +72,26 @@ class ActivityAuthorization : AppCompatActivity() {
                     httpClient.request(
                         URLS.AUTHORIZATION
                     ) {
-                        method = HttpMethod.Get
+                        method = HttpMethod.Post
                         url {
                             parameters.append(
                                 URLS.AUTHORIZATION_USERNAME,
                                 inputLogin.text.toString()
                             )
-                            parameters.append(
-                                URLS.AUTHORIZATION_PASSWORD,
-                                inputPassword.text.toString()
-                            )
                         }
+                        body = MultiPartFormDataContent(formData {
+                            append("username", inputLogin.text.toString())
+                            append("password", inputPassword.text.toString())
+                        })
                     }
+
+                Log.d("HTTP-STATUS", response.status.value.toString())
+                Log.d("HTTP-RESPONSE", response.bodyAsText())
 
                 when (response.status.value) {
                     200 -> completeAuthorization(response.bodyAsText())
                     404 -> userNotFound()
+                    406 -> outdatedClient()
                     429 -> tooManyRequests()
                     else -> unprocessedResponse()
                 }
@@ -110,7 +114,7 @@ class ActivityAuthorization : AppCompatActivity() {
         )
         try {
             runOnUiThread {
-                responseData?.apply {
+                responseData ?. apply {
                     Log.d(
                         "AUTH-DATA",
                         "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
@@ -135,6 +139,14 @@ class ActivityAuthorization : AppCompatActivity() {
         runOnUiThread {
             responseStatusView.text =
                 getString(R.string.authorization_widgets_responseStatus_responseError)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun outdatedClient() {
+        runOnUiThread {
+            responseStatusView.text =
+                getString(R.string.authorization_widgets_responseStatus_outdatedClient)
         }
     }
 

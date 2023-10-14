@@ -5,10 +5,11 @@
     <string name="authorization_widgets_showPassword_disable">Скрыть пароль</string>
     <string name="authorization_widgets_inputLogin">Введите логин</string>
     <string name="authorization_widgets_inputPassword">Введите пароль</string>
-    <string name="authorization_widgets_responseStatus_connectionRefused">Сервер не отвечает. Пожалуйста, повторите попытку позднее.</string>
+    <string name="authorization_widgets_responseStatus_connectionRefused">Сервер не отвечает.\\nПожалуйста, повторите попытку позднее.</string>
     <string name="authorization_widgets_responseStatus_userNotFound">Неверный логин или пароль</string>
     <string name="authorization_widgets_responseStatus_notValidLogin">Неверный логин. Пожалуйста, проверьте ввод.</string>
-    <string name="authorization_widgets_responseStatus_notValidPassword">Неверный пароль. Пожалуйста, проверьте ввод.</string>
-    <string name="authorization_widgets_responseStatus_responseError">Произошла внутренняя ошибка. Пожалуйста, свяжитесь со службой поддержки.</string>
+    <string name="authorization_widgets_input_notValidPassword">Неверный пароль. Пожалуйста, проверьте ввод.</string>
+    <string name="authorization_widgets_responseStatus_responseError">Произошла внутренняя ошибка.\\nПожалуйста, свяжитесь со службой поддержки.</string>
     <string name="authorization_widgets_responseStatus_tooManyRequests">Пожалуйста, подождите перед повторной попыткой</string>
+    <string name="authorization_widgets_responseStatus_outdatedClient">Ваше приложение устарело.\\nПожалуйста, проверьте обновления.</string>
 </resources>

@@ -21,6 +21,7 @@ public class ResponsePackets {
         }
         static class AuthData {
             long id;
+            String username;
             String token;
         }
     }
