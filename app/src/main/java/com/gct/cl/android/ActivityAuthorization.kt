@@ -1,6 +1,7 @@
 package com.gct.cl.android
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -8,6 +9,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKeys
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
 import io.ktor.client.HttpClient
@@ -23,6 +26,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 
 @OptIn(InternalAPI::class)
@@ -33,6 +37,23 @@ class ActivityAuthorization : AppCompatActivity() {
         }
     }
     private var blocked = false
+
+    @Suppress("DEPRECATION")
+    private val mainKeyAlias by lazy {
+        MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+    }
+
+    @Suppress("DEPRECATION")
+    private val tokensFile by lazy {
+        val fileToWrite = File(filesDir, "tokens.json")
+
+        EncryptedFile.Builder(
+            fileToWrite,
+            application,
+            mainKeyAlias,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+        ).build()
+    }
 
     private lateinit var inputLogin: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
@@ -114,13 +135,22 @@ class ActivityAuthorization : AppCompatActivity() {
         )
         try {
             runOnUiThread {
-                responseData ?. apply {
+                responseData?.apply {
                     Log.d(
                         "AUTH-DATA",
                         "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
                     )
                 } ?: unprocessedResponse()
             }
+
+            Thread {
+                saveToken(responseData.data.id, responseData.data.token)
+            }.start()
+
+            startActivity(Intent(this, ActivityMain::class.java).apply {
+                putExtra("id", responseData.data.id)
+                putExtra("token", responseData.data.token)
+            })
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -156,5 +186,9 @@ class ActivityAuthorization : AppCompatActivity() {
             responseStatusView.text =
                 getString(R.string.authorization_widgets_responseStatus_tooManyRequests)
         }
+    }
+
+    private fun saveToken(id: Long, token: String) {
+
     }
 }
