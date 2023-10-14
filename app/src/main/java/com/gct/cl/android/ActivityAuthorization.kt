@@ -27,14 +27,12 @@ import java.io.FileOutputStream
 
 
 class ActivityAuthorization : AppCompatActivity() {
-    private val httpClient = HttpClient() {
+    private val httpClient = HttpClient {
         install(HttpTimeout) {
             requestTimeoutMillis = 20000
         }
     }
     private var blocked = false
-
-    private lateinit var debugView: TextView
 
     private lateinit var inputLogin: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
@@ -54,8 +52,6 @@ class ActivityAuthorization : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @OptIn(DelicateCoroutinesApi::class)
     private fun binder() {
-        debugView = findViewById(R.id.debugView)
-
         inputLogin = findViewById(R.id.activityAuthorization_widgets_inputLogin)
         inputPassword = findViewById(R.id.activityAuthorization_widgets_inputPassword)
         buttonLogIn = findViewById(R.id.activityAuthorization_widgets_login)
@@ -115,10 +111,12 @@ class ActivityAuthorization : AppCompatActivity() {
         try {
             runOnUiThread {
                 responseData?.apply {
-                    debugView.text = "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
+                    Log.d(
+                        "AUTH-DATA",
+                        "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
+                    )
                 } ?: unprocessedResponse()
             }
-            // saveToken(responseData.data.id, responseData.data.token)
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -127,33 +125,24 @@ class ActivityAuthorization : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun userNotFound() {
         runOnUiThread {
-            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_userNotFound)
+            responseStatusView.text =
+                getString(R.string.authorization_widgets_responseStatus_userNotFound)
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun unprocessedResponse() {
         runOnUiThread {
-            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_responseError)
+            responseStatusView.text =
+                getString(R.string.authorization_widgets_responseStatus_responseError)
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun tooManyRequests() {
         runOnUiThread {
-            responseStatusView.text = getString(R.string.authorization_widgets_responseStatus_tooManyRequests)
+            responseStatusView.text =
+                getString(R.string.authorization_widgets_responseStatus_tooManyRequests)
         }
     }
-
-//    private fun saveToken(id: Long, token: String) {
-//        val tokenFile = File(filesDir, "account_${id}.json")
-//
-//        FileOutputStream(tokenFile).write(
-//            JsonStream.serialize(
-//                mapOf(
-//                    id to token
-//                )
-//            ).toByteArray()
-//        )
-//    }
 }
