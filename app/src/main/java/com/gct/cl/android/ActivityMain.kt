@@ -41,24 +41,29 @@ class ActivityMain : AppCompatActivity() {
         }
 
         button_addCustomWidget.setOnClickListener {
-            val widget = ChannelMessageWidget(this)
+            val widget = ChannelMessageWidget(this, windowManager.defaultDisplay.width)
 
-            widget.setLayoutParams(LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ))
+            widget.setLayoutParams(
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+            )
 
             widget.setAvatar(
-                BitmapFactory.decodeResource(getResources(),
-                R.drawable.default_avatar))
+                BitmapFactory.decodeResource(
+                    getResources(),
+                    R.drawable.default_avatar
+                )
+            )
 
-            widget.setText("ТекстТекст".repeat(count))
+            widget.setText("ТекстТекст".repeat(count + 1))
 
             layout.addView(widget)
         }
 
         button_addButton.setOnClickListener {
-            count ++
+            count++
 
             val button = Button(this)
 
