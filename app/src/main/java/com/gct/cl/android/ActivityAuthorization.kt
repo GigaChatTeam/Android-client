@@ -1,6 +1,7 @@
 package com.gct.cl.android
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -10,6 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
+import com.jsoniter.output.JsonStream
+import com.jsoniter.spi.JsonException
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.forms.MultiPartFormDataContent
@@ -23,6 +26,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 
 @OptIn(InternalAPI::class)
@@ -33,6 +37,9 @@ class ActivityAuthorization : AppCompatActivity() {
         }
     }
     private var blocked = false
+
+    private val path by lazy { if (DEBUG) getExternalFilesDir("") else filesDir }
+    private val tokensFile by lazy { File(path, "localAccounts.sjson").apply { createNewFile() } }
 
     private lateinit var inputLogin: TextInputEditText
     private lateinit var inputPassword: TextInputEditText
@@ -114,13 +121,22 @@ class ActivityAuthorization : AppCompatActivity() {
         )
         try {
             runOnUiThread {
-                responseData ?. apply {
+                responseData?.apply {
                     Log.d(
                         "AUTH-DATA",
                         "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
                     )
                 } ?: unprocessedResponse()
             }
+
+            Thread {
+                saveToken(responseData.data.id, responseData.data.token)
+            }.start()
+
+            startActivity(Intent(this, ActivityMain::class.java).apply {
+                putExtra("id", responseData.data.id)
+                putExtra("token", responseData.data.token)
+            })
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -156,5 +172,27 @@ class ActivityAuthorization : AppCompatActivity() {
             responseStatusView.text =
                 getString(R.string.authorization_widgets_responseStatus_tooManyRequests)
         }
+    }
+
+    private fun saveToken(id: Long, token: String) {
+        val accounts = mutableListOf<Helper.LocalAccount>()
+
+        for (data in tokensFile.readText().split(";")) {
+            try {
+                accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java))
+            } catch (_: JsonException) { continue }
+
+            Log.d("TOKEN TO SAVE TOKENS FILE", JsonStream.serialize(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)))
+        }
+
+        accounts.add(Helper.constructLocalAccount(token, id))
+
+        val writableAccounts = mutableListOf<String>()
+
+        for (account in accounts) {
+            writableAccounts.add(JsonStream.serialize(account))
+        }
+
+        tokensFile.writeText(writableAccounts.joinToString(";"))
     }
 }

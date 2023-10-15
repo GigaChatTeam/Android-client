@@ -5,3 +5,5 @@ object URLS {
     const val AUTHORIZATION_USERNAME = "username"
     const val AUTHORIZATION_PASSWORD = "password"
 }
+
+var DEBUG = true
