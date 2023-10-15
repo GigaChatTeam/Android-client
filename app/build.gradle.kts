@@ -45,10 +45,12 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
+    //noinspection UseTomlInstead
     implementation("org.java-websocket:Java-WebSocket:1.5.4")
     implementation(libs.androidx.ui.graphics.android)
     implementation(libs.jsoniter)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.jsoniter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
