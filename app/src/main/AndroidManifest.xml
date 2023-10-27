@@ -15,6 +15,10 @@
         android:theme="@style/Theme.AndroidClientForGigaChat"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".chat"
+            android:exported="false" />
+
         <service
             android:name=".WSHandler"
             android:enabled="true"
@@ -28,9 +32,10 @@
             android:exported="true" />
         <activity
             android:name=".Loader"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

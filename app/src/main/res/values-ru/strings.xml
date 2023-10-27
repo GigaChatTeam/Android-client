@@ -12,4 +12,6 @@
     <string name="authorization_widgets_responseStatus_responseError">Произошла внутренняя ошибка.\\nПожалуйста, свяжитесь со службой поддержки.</string>
     <string name="authorization_widgets_responseStatus_tooManyRequests">Пожалуйста, подождите перед повторной попыткой</string>
     <string name="authorization_widgets_responseStatus_outdatedClient">Ваше приложение устарело.\\nПожалуйста, проверьте обновления.</string>
+    <string name="enter_your_messege">Введите сообщение</string>
+    <string name="send">Отправить</string>
 </resources>

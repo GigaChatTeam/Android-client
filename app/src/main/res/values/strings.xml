@@ -12,4 +12,6 @@
     <string name="authorization_widgets_responseStatus_responseError">An internal error has occurred.\\nContact customer support.</string>
     <string name="authorization_widgets_responseStatus_tooManyRequests">Please wait before trying again</string>
     <string name="authorization_widgets_responseStatus_outdatedClient">Your application is outdated.\\nPlease check for updates.</string>
+    <string name="enter_your_messege">Enter your message</string>
+    <string name="send">Send</string>
 </resources>

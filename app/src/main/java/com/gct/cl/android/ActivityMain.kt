@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+
 
 class ActivityMain : AppCompatActivity() {
     private var count = 0
     private lateinit var handler: WSHandler
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +40,16 @@ class ActivityMain : AppCompatActivity() {
         val button_addButton = findViewById<Button>(R.id.button_addButton)
         val button_addCustomWidget = findViewById<Button>(R.id.button_addCustomWidget)
 
-        val layout = findViewById<LinearLayout>(R.id.testLayout)
-        val scrollView = findViewById<ScrollView>(R.id.testScroll)
+        val layout = findViewById<LinearLayout>(R.id.linearLayout)
+        val scrollView = findViewById<ScrollView>(R.id.scroll)
 
         val upButton = findViewById<Button>(R.id.upButton)
         val downButton = findViewById<Button>(R.id.downButton)
+
+        val messageInput = findViewById<TextView>(R.id.messegeInput)
+        val messageSend = findViewById<Button>(R.id.send)
+
+        messageInput.hint = getText(R.string.enter_your_messege)
 
         upButton.setOnClickListener {
             scrollView.fullScroll(ScrollView.FOCUS_UP)
@@ -84,4 +92,7 @@ class ActivityMain : AppCompatActivity() {
             layout.addView(button)
         }
     }
+
+
+
 }
