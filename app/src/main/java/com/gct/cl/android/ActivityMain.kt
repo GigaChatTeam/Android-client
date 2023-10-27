@@ -2,12 +2,12 @@ package com.gct.cl.android
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class ActivityMain : AppCompatActivity() {
     private var count = 0
@@ -45,15 +45,13 @@ class ActivityMain : AppCompatActivity() {
 
             widget.setLayoutParams(
                 LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
                 )
             )
 
             widget.setAvatar(
                 BitmapFactory.decodeResource(
-                    getResources(),
-                    R.drawable.default_avatar
+                    getResources(), R.drawable.default_avatar
                 )
             )
 

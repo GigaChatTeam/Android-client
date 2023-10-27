@@ -179,10 +179,22 @@ class ActivityAuthorization : AppCompatActivity() {
 
         for (data in tokensFile.readText().split(";")) {
             try {
-                accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java) .apply { main = false })
-            } catch (_: JsonException) { continue }
+                accounts.add(
+                    JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
+                        .apply { main = false })
+            } catch (_: JsonException) {
+                continue
+            }
 
-            Log.d("TOKEN TO SAVE", JsonStream.serialize(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)))
+            Log.d(
+                "TOKEN TO SAVE",
+                JsonStream.serialize(
+                    JsonIterator.deserialize(
+                        data,
+                        Helper.LocalAccount::class.java
+                    )
+                )
+            )
         }
 
         accounts.add(Helper.constructLocalAccount(token, id))

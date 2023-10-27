@@ -8,17 +8,20 @@ public class ResponsePackets {
                 String status;
                 AuthData data;
             }
+
             static class ClientError {
                 String status;
                 String reason;
                 String description;
             }
+
             static class NotFound {
                 String status;
                 String reason;
                 String description;
             }
         }
+
         static class AuthData {
             long id;
             String username;

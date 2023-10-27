@@ -2,7 +2,6 @@ package com.gct.cl.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.jsoniter.JsonIterator
@@ -28,7 +27,7 @@ class Loader : AppCompatActivity() {
         if (account == null) {
             startActivity(Intent(this, ActivityAuthorization::class.java))
         } else {
-            startActivity(Intent(this, ActivityMain::class.java) .apply {
+            startActivity(Intent(this, ActivityMain::class.java).apply {
                 putExtra("token", account!!.token)
                 putExtra("id", account!!.id)
             })
@@ -41,7 +40,9 @@ class Loader : AppCompatActivity() {
 
             try {
                 account = JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-            } catch (_: JsonException) { continue }
+            } catch (_: JsonException) {
+                continue
+            }
 
             Log.d("TOKEN FROM TOKENS FILE", JsonStream.serialize(account))
             if (account?.main == true) return account
