@@ -50,6 +50,11 @@ class ActivityMain : AppCompatActivity() {
         val messageSend = findViewById<Button>(R.id.send)
 
         messageInput.hint = getText(R.string.enter_your_messege)
+        messageSend.setOnClickListener {
+            val pocket =
+                CommandPackets.Channels.Messages.Post.New(6, 4, messageInput.text.toString())
+            handler.send(pocket.serialize("MISSED"))
+        }
 
         upButton.setOnClickListener {
             scrollView.fullScroll(ScrollView.FOCUS_UP)
@@ -92,7 +97,6 @@ class ActivityMain : AppCompatActivity() {
             layout.addView(button)
         }
     }
-
 
 
 }
