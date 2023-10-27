@@ -87,8 +87,8 @@ class ActivityAuthorization : AppCompatActivity() {
                             )
                         }
                         body = MultiPartFormDataContent(formData {
-                            append("username", inputLogin.text.toString())
-                            append("password", inputPassword.text.toString())
+                            append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
+                            append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
                         })
                     }
 
@@ -182,7 +182,7 @@ class ActivityAuthorization : AppCompatActivity() {
                 accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java))
             } catch (_: JsonException) { continue }
 
-            Log.d("TOKEN TO SAVE TOKENS FILE", JsonStream.serialize(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)))
+            Log.d("TOKEN TO SAVE", JsonStream.serialize(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)))
         }
 
         accounts.add(Helper.constructLocalAccount(token, id))

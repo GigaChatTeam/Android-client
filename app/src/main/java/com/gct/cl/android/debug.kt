@@ -6,4 +6,4 @@ object URLS {
     const val AUTHORIZATION_PASSWORD = "password"
 }
 
-var DEBUG = true
+const val DEBUG = true

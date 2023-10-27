@@ -1,19 +1,18 @@
 [versions]
-agp = "8.3.0-alpha07"
+agp = "8.3.0-alpha11"
 kotlin = "1.9.0"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
-material = "1.9.0"
+material = "1.10.0"
 constraintlayout = "2.1.4"
 jsoniter = "0.9.23"
 ktor-client-android = "2.3.4"
 ktor-client-core = "2.3.4"
 kotlinx-serialization-json = "1.6.0"
-ui-graphics-android = "1.5.3"
-security-crypto = "1.1.0-alpha06"
+ui-graphics-android = "1.5.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -28,7 +27,6 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref =
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "ui-graphics-android" }
 jsoniter = { group = "com.jsoniter", name = "jsoniter", version.ref = "jsoniter" }
-androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version = "1.1.0-alpha02" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

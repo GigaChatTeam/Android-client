@@ -49,7 +49,6 @@ dependencies {
     implementation("org.java-websocket:Java-WebSocket:1.5.4")
     implementation(libs.androidx.ui.graphics.android)
     implementation(libs.jsoniter)
-    implementation(libs.androidx.security.crypto)
     implementation(libs.jsoniter)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
