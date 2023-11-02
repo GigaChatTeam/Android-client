@@ -14,4 +14,11 @@
     <string name="authorization_widgets_responseStatus_outdatedClient">Ваше приложение устарело.\\nПожалуйста, проверьте обновления.</string>
     <string name="enter_your_messege">Введите сообщение</string>
     <string name="send">Отправить</string>
+    <string name="authorization_widgets_no_account">Нет аккаунта?</string>
+    <string name="authorization_widgets_register">Зарегистрироваться</string>
+    <string name="registration_widgets_login">Придумайте логин</string>
+    <string name="registration_widgets_contact">Введите e-mail или номер телефона</string>
+    <string name="registration_widgets_password">Придумайте пароль</string>
+    <string name="registration_widgets_repeat_password">Повторите пароль</string>
+    <string name="registration_widgets_register">Зарегистрироваться</string>
 </resources>

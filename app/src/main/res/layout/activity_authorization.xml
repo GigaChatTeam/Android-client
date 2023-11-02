@@ -41,12 +41,12 @@
 
     <Button
         android:id="@+id/activityAuthorization_widgets_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_width="109dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="36dp"
         android:text="@string/authorization_widgets_logIn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
 
@@ -54,9 +54,10 @@
         android:id="@+id/activityAuthorization_widgets_showPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:text="@string/authorization_widgets_showPassword_enable"
         app:layout_constraintEnd_toEndOf="@+id/activityAuthorization_widgets_inputPassword"
+        app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintStart_toEndOf="@+id/activityAuthorization_widgets_login"
         app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
 
@@ -64,10 +65,35 @@
         android:id="@+id/debugView"
         android:layout_width="256dp"
         android:layout_height="128dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="44dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/goToRegister"
+        android:layout_width="242dp"
+        android:layout_height="54dp"
+        android:text="@string/authorization_widgets_register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.734" />
+
+    <TextView
+        android:id="@+id/noAccount"
+        android:layout_width="224dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="7dp"
+        android:text="@string/authorization_widgets_no_account"
+        app:layout_constraintBottom_toTopOf="@+id/goToRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.997" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

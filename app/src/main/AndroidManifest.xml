@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ActivityRegister"
+            android:exported="false" />
+        <activity
             android:name=".chat"
             android:exported="false" />
 
