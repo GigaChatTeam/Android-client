@@ -14,4 +14,16 @@
     <string name="authorization_widgets_responseStatus_outdatedClient">Your application is outdated.\\nPlease check for updates.</string>
     <string name="enter_your_messege">Enter your message</string>
     <string name="send">Send</string>
+    <string name="authorization_widgets_no_account">Don\'t have an account?</string>
+    <string name="authorization_widgets_register">Register</string>
+    <string name="registration_widgets_login">Create a login</string>
+    <string name="registration_widgets_contact">Input email or phone number</string>
+    <string name="registration_widgets_password">Create password</string>
+    <string name="registration_widgets_repeat_password">Repeat your password</string>
+    <string name="registration_widgets_register">Register</string>
+    <string name="registration_widgets_responseStatus_usernameAlreadyRegistered">Username already registered</string>
+    <string name="registration_widgets_responseStatus_notValidPassword">Your password must contain at least 1 number and specisl symbol</string>
+    <string name="registration_widgets_responseStatus_notValidContact">E-mail must contain \"@\" symbol</string>
+    <string name="registration_widgets_responseStatus_notValidName">Invalid username. Please change it</string>
+    <string name="registration_widgets_responseStatus_contactAlreadyRegistered">Contact alreadt registered</string>
 </resources>
