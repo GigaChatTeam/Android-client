@@ -1,6 +1,7 @@
 package com.gct.cl.android
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -46,6 +47,8 @@ class ActivityAuthorization : AppCompatActivity() {
     private lateinit var buttonLogIn: Button
     private lateinit var showPassword: CheckBox
     private lateinit var responseStatusView: TextView
+    private lateinit var noAccount: TextView
+    private lateinit var goToRegister: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,14 @@ class ActivityAuthorization : AppCompatActivity() {
             if (isChecked) inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             else inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         }
+
+        noAccount = findViewById(R.id.noAccount)
+        goToRegister = findViewById(R.id.goToRegister)
+
+        goToRegister.setOnClickListener {
+            startActivity(Intent(this, ActivityR))
+        }
+
     }
 
     private fun authorize() {
