@@ -66,50 +66,52 @@ class ActivityAuthorization : AppCompatActivity() {
         showPassword = findViewById(R.id.activityAuthorization_widgets_showPassword)
         responseStatusView = findViewById(R.id.activityAuthorization_widgets_responseStatus)
 
-        buttonLogIn.setOnClickListener {
-            if (blocked) {
-                tooManyRequests()
-                return@setOnClickListener
-            } else blocked = true
-
-            responseStatusView.text = ""
-
-            GlobalScope.launch(Dispatchers.IO) {
-                val response: HttpResponse =
-                    httpClient.request(
-                        URLS.AUTHORIZATION
-                    ) {
-                        method = HttpMethod.Post
-                        url {
-                            parameters.append(
-                                URLS.AUTHORIZATION_USERNAME,
-                                inputLogin.text.toString()
-                            )
-                        }
-                        body = MultiPartFormDataContent(formData {
-                            append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
-                            append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
-                        })
-                    }
-
-                Log.d("HTTP-STATUS", response.status.value.toString())
-                Log.d("HTTP-RESPONSE", response.bodyAsText())
-
-                when (response.status.value) {
-                    200 -> completeAuthorization(response.bodyAsText())
-                    404 -> userNotFound()
-                    406 -> outdatedClient()
-                    429 -> tooManyRequests()
-                    else -> unprocessedResponse()
-                }
-
-                blocked = false
-            }
-        }
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             else inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        }
+    }
+
+    private fun authorize() {
+        if (blocked) {
+            tooManyRequests()
+        } else {
+            blocked = true
+        }
+
+        responseStatusView.text = ""
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val response: HttpResponse =
+                httpClient.request(
+                    URLS.AUTHORIZATION
+                ) {
+                    method = HttpMethod.Post
+                    url {
+                        parameters.append(
+                            URLS.AUTHORIZATION_USERNAME,
+                            inputLogin.text.toString()
+                        )
+                    }
+                    body = MultiPartFormDataContent(formData {
+                        append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
+                        append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
+                    })
+                }
+
+            Log.d("HTTP-STATUS", response.status.value.toString())
+            Log.d("HTTP-RESPONSE", response.bodyAsText())
+
+            when (response.status.value) {
+                200 -> completeAuthorization(response.bodyAsText())
+                404 -> userNotFound()
+                406 -> outdatedClient()
+                429 -> tooManyRequests()
+                else -> unprocessedResponse()
+            }
+
+            blocked = false
         }
     }
 

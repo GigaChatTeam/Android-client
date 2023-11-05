@@ -6,17 +6,30 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
+
 class ActivityMain : AppCompatActivity() {
     private var count = 0
+    private lateinit var handler: WSHandler
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         supportActionBar?.hide()
+
+        handler = WSHandler(
+            URLS.RTCD + "/?id=${
+                intent.getLongExtra(
+                    "id",
+                    0
+                )
+            }&token=${intent.getStringExtra("token") ?: "NULL"}"
+        )
 
         binder()
     }
@@ -27,11 +40,21 @@ class ActivityMain : AppCompatActivity() {
         val button_addButton = findViewById<Button>(R.id.button_addButton)
         val button_addCustomWidget = findViewById<Button>(R.id.button_addCustomWidget)
 
-        val layout = findViewById<LinearLayout>(R.id.testLayout)
-        val scrollView = findViewById<ScrollView>(R.id.testScroll)
+        val layout = findViewById<LinearLayout>(R.id.linearLayout)
+        val scrollView = findViewById<ScrollView>(R.id.scroll)
 
         val upButton = findViewById<Button>(R.id.upButton)
         val downButton = findViewById<Button>(R.id.downButton)
+
+        val messageInput = findViewById<TextView>(R.id.messegeInput)
+        val messageSend = findViewById<Button>(R.id.send)
+
+        messageInput.hint = getText(R.string.enter_your_messege)
+        messageSend.setOnClickListener {
+            val pocket =
+                CommandPackets.Channels.Messages.Post.New(6, 4, messageInput.text.toString())
+            handler.send(pocket.serialize("MISSED"))
+        }
 
         upButton.setOnClickListener {
             scrollView.fullScroll(ScrollView.FOCUS_UP)
@@ -74,4 +97,6 @@ class ActivityMain : AppCompatActivity() {
             layout.addView(button)
         }
     }
+
+
 }
