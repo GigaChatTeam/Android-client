@@ -26,7 +26,8 @@ class Loader : AppCompatActivity() {
 
         if (account == null) {
             startActivity(Intent(this, ActivityAuthorization::class.java))
-        } else {
+        }
+        else {
             startActivity(Intent(this, ActivityMain::class.java).apply {
                 putExtra("token", account!!.token)
                 putExtra("id", account!!.id)
@@ -40,7 +41,8 @@ class Loader : AppCompatActivity() {
 
             try {
                 account = JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-            } catch (_: JsonException) {
+            }
+            catch (_: JsonException) {
                 continue
             }
 
