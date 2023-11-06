@@ -37,6 +37,8 @@ class ActivityRegistration : AppCompatActivity() {
         }
     }
 
+    private var blocked = false
+
     private val path by lazy { if (DEBUG) getExternalFilesDir("") else filesDir }
     private val tokensFile by lazy { File(path, "localAccounts.sjson").apply { createNewFile() } }
 
@@ -56,6 +58,8 @@ class ActivityRegistration : AppCompatActivity() {
         setContentView(R.layout.activity_registration)
 
         supportActionBar?.hide()
+
+        binder()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -76,7 +80,14 @@ class ActivityRegistration : AppCompatActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun register() {
+        if (blocked) {
+            tooManyRequests()
+        } else {
+            blocked = true
+        }
+
         responseStatusRegistration.setText("")
 
         if (checkContact() and checkPassword()) {
@@ -110,6 +121,7 @@ class ActivityRegistration : AppCompatActivity() {
                     else -> unprocessedResponse()
                 }
 
+                blocked = false
             }
         }
     }
@@ -160,6 +172,7 @@ class ActivityRegistration : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun tooManyRequests() {
         runOnUiThread {
             responseStatusRegistration.text =
@@ -175,6 +188,7 @@ class ActivityRegistration : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun notValid(body: String) { // 400
         val data =
             JsonIterator.deserialize(body, ResponsePackets.AC.Registration.NotValid::class.java)

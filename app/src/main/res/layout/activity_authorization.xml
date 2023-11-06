@@ -44,6 +44,7 @@
         android:layout_width="109dp"
         android:layout_height="70dp"
         android:layout_marginTop="36dp"
+        android:onClick="authorize"
         android:text="@string/authorization_widgets_logIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.258"

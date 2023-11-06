@@ -78,12 +78,13 @@ class ActivityAuthorization : AppCompatActivity() {
         noAccount = findViewById(R.id.noAccount)
         goToRegister = findViewById(R.id.goToRegister)
 
-        goToRegister.setOnClickListener {
-            startActivity(Intent(this, ActivityR))
-        }
 
+        goToRegister.setOnClickListener {
+            startActivity(Intent(this, ActivityRegistration::class.java))
+        }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun authorize() {
         if (blocked) {
             tooManyRequests()
@@ -94,22 +95,20 @@ class ActivityAuthorization : AppCompatActivity() {
         responseStatusView.text = ""
 
         GlobalScope.launch(Dispatchers.IO) {
-            val response: HttpResponse =
-                httpClient.request(
-                    URLS.AUTHORIZATION
-                ) {
-                    method = HttpMethod.Post
-                    url {
-                        parameters.append(
-                            URLS.AUTHORIZATION_USERNAME,
-                            inputLogin.text.toString()
-                        )
-                    }
-                    body = MultiPartFormDataContent(formData {
-                        append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
-                        append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
-                    })
+            val response: HttpResponse = httpClient.request(
+                URLS.AUTHORIZATION
+            ) {
+                method = HttpMethod.Post
+                url {
+                    parameters.append(
+                        URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString()
+                    )
                 }
+                body = MultiPartFormDataContent(formData {
+                    append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
+                    append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
+                })
+            }
 
             Log.d("HTTP-STATUS", response.status.value.toString())
             Log.d("HTTP-RESPONSE", response.bodyAsText())
@@ -126,11 +125,11 @@ class ActivityAuthorization : AppCompatActivity() {
         }
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun completeAuthorization(responseText: String) {
         val responseData = JsonIterator.deserialize(
-            responseText,
-            ResponsePackets.AC.Authorization.Done::class.java
+            responseText, ResponsePackets.AC.Authorization.Done::class.java
         )
         try {
             runOnUiThread {
@@ -192,19 +191,16 @@ class ActivityAuthorization : AppCompatActivity() {
 
         for (data in tokensFile.readText().split(";")) {
             try {
-                accounts.add(
-                    JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-                        .apply { main = false })
+                accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
+                    .apply { main = false })
             } catch (_: JsonException) {
                 continue
             }
 
             Log.d(
-                "TOKEN TO SAVE",
-                JsonStream.serialize(
+                "TOKEN TO SAVE", JsonStream.serialize(
                     JsonIterator.deserialize(
-                        data,
-                        Helper.LocalAccount::class.java
+                        data, Helper.LocalAccount::class.java
                     )
                 )
             )
