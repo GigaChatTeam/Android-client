@@ -1,6 +1,7 @@
 package com.gct.cl.android
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -46,6 +47,8 @@ class ActivityAuthorization : AppCompatActivity() {
     private lateinit var buttonLogIn: Button
     private lateinit var showPassword: CheckBox
     private lateinit var responseStatusView: TextView
+    private lateinit var noAccount: TextView
+    private lateinit var goToRegister: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,58 +69,67 @@ class ActivityAuthorization : AppCompatActivity() {
         showPassword = findViewById(R.id.activityAuthorization_widgets_showPassword)
         responseStatusView = findViewById(R.id.activityAuthorization_widgets_responseStatus)
 
-        buttonLogIn.setOnClickListener {
-            if (blocked) {
-                tooManyRequests()
-                return@setOnClickListener
-            } else blocked = true
-
-            responseStatusView.text = ""
-
-            GlobalScope.launch(Dispatchers.IO) {
-                val response: HttpResponse =
-                    httpClient.request(
-                        URLS.AUTHORIZATION
-                    ) {
-                        method = HttpMethod.Post
-                        url {
-                            parameters.append(
-                                URLS.AUTHORIZATION_USERNAME,
-                                inputLogin.text.toString()
-                            )
-                        }
-                        body = MultiPartFormDataContent(formData {
-                            append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
-                            append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
-                        })
-                    }
-
-                Log.d("HTTP-STATUS", response.status.value.toString())
-                Log.d("HTTP-RESPONSE", response.bodyAsText())
-
-                when (response.status.value) {
-                    200 -> completeAuthorization(response.bodyAsText())
-                    404 -> userNotFound()
-                    406 -> outdatedClient()
-                    429 -> tooManyRequests()
-                    else -> unprocessedResponse()
-                }
-
-                blocked = false
-            }
-        }
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             else inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         }
+
+        noAccount = findViewById(R.id.noAccount)
+        goToRegister = findViewById(R.id.goToRegister)
+
+
+        goToRegister.setOnClickListener {
+            startActivity(Intent(this, ActivityRegistration::class.java))
+        }
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun authorize() {
+        if (blocked) {
+            tooManyRequests()
+        } else {
+            blocked = true
+        }
+
+        responseStatusView.text = ""
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val response: HttpResponse = httpClient.request(
+                URLS.AUTHORIZATION
+            ) {
+                method = HttpMethod.Post
+                url {
+                    parameters.append(
+                        URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString()
+                    )
+                }
+                body = MultiPartFormDataContent(formData {
+                    append(URLS.AUTHORIZATION_USERNAME, inputLogin.text.toString())
+                    append(URLS.AUTHORIZATION_PASSWORD, inputPassword.text.toString())
+                })
+            }
+
+            Log.d("HTTP-STATUS", response.status.value.toString())
+            Log.d("HTTP-RESPONSE", response.bodyAsText())
+
+            when (response.status.value) {
+                200 -> completeAuthorization(response.bodyAsText())
+                404 -> userNotFound()
+                406 -> outdatedClient()
+                429 -> tooManyRequests()
+                else -> unprocessedResponse()
+            }
+
+            blocked = false
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun completeAuthorization(responseText: String) {
         val responseData = JsonIterator.deserialize(
-            responseText,
-            ResponsePackets.AC.Authorization.Done::class.java
+            responseText, ResponsePackets.AC.Authorization.Done::class.java
         )
         try {
             runOnUiThread {
@@ -179,19 +191,16 @@ class ActivityAuthorization : AppCompatActivity() {
 
         for (data in tokensFile.readText().split(";")) {
             try {
-                accounts.add(
-                    JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-                        .apply { main = false })
+                accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
+                    .apply { main = false })
             } catch (_: JsonException) {
                 continue
             }
 
             Log.d(
-                "TOKEN TO SAVE",
-                JsonStream.serialize(
+                "TOKEN TO SAVE", JsonStream.serialize(
                     JsonIterator.deserialize(
-                        data,
-                        Helper.LocalAccount::class.java
+                        data, Helper.LocalAccount::class.java
                     )
                 )
             )
