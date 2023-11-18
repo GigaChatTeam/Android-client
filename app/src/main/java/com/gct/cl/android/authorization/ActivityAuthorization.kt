@@ -1,15 +1,17 @@
-package com.gct.cl.android
+package com.gct.cl.android.authorization
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
-import android.widget.Button
+import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.gct.cl.android.DEBUG
+import com.gct.cl.android.R
+import com.gct.cl.android.URLS
+import com.gct.cl.android.main.ActivityMain
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
 import com.jsoniter.output.JsonStream
@@ -30,7 +32,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 
 
-@OptIn(InternalAPI::class)
 class ActivityAuthorization : AppCompatActivity() {
     private val httpClient = HttpClient {
         install(HttpTimeout) {
@@ -42,50 +43,30 @@ class ActivityAuthorization : AppCompatActivity() {
     private val path by lazy { if (DEBUG) getExternalFilesDir("") else filesDir }
     private val tokensFile by lazy { File(path, "localAccounts.sjson").apply { createNewFile() } }
 
-    private lateinit var inputLogin: TextInputEditText
-    private lateinit var inputPassword: TextInputEditText
-    private lateinit var buttonLogIn: Button
-    private lateinit var showPassword: CheckBox
-    private lateinit var responseStatusView: TextView
-    private lateinit var noAccount: TextView
-    private lateinit var goToRegister: Button
+    private val inputLogin: TextInputEditText by lazy { findViewById(R.id.activityAuthorization_widgets_inputLogin) }
+    private val inputPassword: TextInputEditText by lazy { findViewById(R.id.activityAuthorization_widgets_inputPassword) }
+    private val showPassword: CheckBox by lazy { findViewById(R.id.activityAuthorization_widgets_showPassword) }
+    private val responseStatusView: TextView by lazy { findViewById(R.id.activityAuthorization_widgets_responseStatus) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authorization)
 
-        supportActionBar?.hide()
-
         binder()
+
+        supportActionBar?.hide()
     }
 
-    @SuppressLint("SetTextI18n")
-    @OptIn(DelicateCoroutinesApi::class)
     private fun binder() {
-        inputLogin = findViewById(R.id.activityAuthorization_widgets_inputLogin)
-        inputPassword = findViewById(R.id.activityAuthorization_widgets_inputPassword)
-        buttonLogIn = findViewById(R.id.activityAuthorization_widgets_login)
-
-        showPassword = findViewById(R.id.activityAuthorization_widgets_showPassword)
-        responseStatusView = findViewById(R.id.activityAuthorization_widgets_responseStatus)
-
-
         showPassword.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) inputPassword.setInputType(InputType.TYPE_CLASS_TEXT)
             else inputPassword.setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         }
-
-        noAccount = findViewById(R.id.noAccount)
-        goToRegister = findViewById(R.id.goToRegister)
-
-
-        goToRegister.setOnClickListener {
-            startActivity(Intent(this, ActivityRegistration::class.java))
-        }
     }
 
+    @InternalAPI
     @OptIn(DelicateCoroutinesApi::class)
-    private fun authorize() {
+    fun authorize(view: View) {
         if (blocked) {
             tooManyRequests()
         } else {
@@ -110,9 +91,6 @@ class ActivityAuthorization : AppCompatActivity() {
                 })
             }
 
-            Log.d("HTTP-STATUS", response.status.value.toString())
-            Log.d("HTTP-RESPONSE", response.bodyAsText())
-
             when (response.status.value) {
                 200 -> completeAuthorization(response.bodyAsText())
                 404 -> userNotFound()
@@ -126,29 +104,28 @@ class ActivityAuthorization : AppCompatActivity() {
     }
 
 
+    fun register(view: View) {
+        startActivity(Intent(this, ActivityRegistration::class.java))
+    }
+
+
     @SuppressLint("SetTextI18n")
     private fun completeAuthorization(responseText: String) {
-        val responseData = JsonIterator.deserialize(
-            responseText, ResponsePackets.AC.Authorization.Done::class.java
-        )
-        try {
-            runOnUiThread {
-                responseData?.apply {
-                    Log.d(
-                        "AUTH-DATA",
-                        "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
-                    )
-                } ?: unprocessedResponse()
-            }
+        val responseData: Packets.Authorizations.Done
 
-            Thread {
-                saveToken(responseData.data.id, responseData.data.token)
-            }.start()
+        try {
+            responseData = JsonIterator.deserialize(
+                responseText, Packets.Authorizations.Done::class.java
+            )
+
+            saveToken(responseData.data.id, responseData.data.token)
 
             startActivity(Intent(this, ActivityMain::class.java).apply {
                 putExtra("id", responseData.data.id)
                 putExtra("token", responseData.data.token)
             })
+        } catch (_: JsonException) {
+            unprocessedResponse()
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -187,30 +164,24 @@ class ActivityAuthorization : AppCompatActivity() {
     }
 
     private fun saveToken(id: Long, token: String) {
-        val accounts = mutableListOf<Helper.LocalAccount>()
+        val accounts = mutableListOf<LocalAccount>()
 
         for (data in tokensFile.readText().split(";")) {
             try {
-                accounts.add(JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-                    .apply { main = false })
+                accounts.add(
+                    JsonIterator.deserialize(data, LocalAccount::class.java)
+                        .apply { main = false })
             } catch (_: JsonException) {
                 continue
             }
-
-            Log.d(
-                "TOKEN TO SAVE", JsonStream.serialize(
-                    JsonIterator.deserialize(
-                        data, Helper.LocalAccount::class.java
-                    )
-                )
-            )
         }
 
-        accounts.add(Helper.constructLocalAccount(token, id))
+        accounts.add(LocalAccount.constructLocalAccount(token, id))
 
         val writableAccounts = mutableListOf<String>()
 
         for (account in accounts) {
+            if ((account.id == id) and !account.main) continue
             writableAccounts.add(JsonStream.serialize(account))
         }
 

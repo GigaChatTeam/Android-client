@@ -1,14 +1,17 @@
-package com.gct.cl.android
+package com.gct.cl.android.authorization
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.gct.cl.android.DEBUG
+import com.gct.cl.android.R
+import com.gct.cl.android.URLS
+import com.gct.cl.android.main.ActivityMain
 import com.google.android.material.textfield.TextInputEditText
 import com.jsoniter.JsonIterator
 import com.jsoniter.output.JsonStream
@@ -31,7 +34,7 @@ import java.io.File
 
 @OptIn(InternalAPI::class)
 class ActivityRegistration : AppCompatActivity() {
-    private val httpClient = HttpClient() {
+    private val httpClient = HttpClient {
         install(HttpTimeout) {
             requestTimeoutMillis = 20000
         }
@@ -50,7 +53,7 @@ class ActivityRegistration : AppCompatActivity() {
     private lateinit var responseStatusRegistration: TextView
     private lateinit var showPassword: CheckBox
 
-    private val specs = Regex("[^a-zA-Z0-9 ]")
+    private val specs = Regex("[^a-zA-Z0-9]")
     private val nums = Regex("\\d+")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +65,6 @@ class ActivityRegistration : AppCompatActivity() {
         binder()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("SetTextI18n")
     private fun binder() {
         contact = findViewById(R.id.contact)
@@ -84,11 +86,13 @@ class ActivityRegistration : AppCompatActivity() {
     private fun register() {
         if (blocked) {
             tooManyRequests()
-        } else {
-            blocked = true
+            return
         }
 
-        responseStatusRegistration.setText("")
+        blocked = true
+
+
+        responseStatusRegistration.text = ""
 
         if (checkContact() and checkPassword()) {
             GlobalScope.launch(Dispatchers.IO) {
@@ -109,8 +113,6 @@ class ActivityRegistration : AppCompatActivity() {
                             })
                         }
                     }
-                Log.d("HTTP-STATUS", response.status.value.toString())
-                Log.d("HTTP-RESPONSE", response.bodyAsText())
 
                 when (response.status.value) {
                     200 -> completeRegistration(response.bodyAsText())
@@ -128,28 +130,21 @@ class ActivityRegistration : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun completeRegistration(responseText: String) {
-        val responseData = JsonIterator.deserialize(
-            responseText,
-            ResponsePackets.AC.Registration.Done::class.java
-        )
-        try {
-            runOnUiThread {
-                responseData?.apply {
-                    Log.d(
-                        "AUTH-DATA",
-                        "id: ${responseData.data.id}\ntoken: ${responseData.data.token}"
-                    )
-                } ?: unprocessedResponse()
-            }
+        val responseData: Packets.Authorizations.Done
 
-            Thread {
-                saveToken(responseData.data.id, responseData.data.token)
-            }.start()
+        try {
+            responseData = JsonIterator.deserialize(
+                responseText, Packets.Authorizations.Done::class.java
+            )
+
+            saveToken(responseData.data.id, responseData.data.token)
 
             startActivity(Intent(this, ActivityMain::class.java).apply {
                 putExtra("id", responseData.data.id)
                 putExtra("token", responseData.data.token)
             })
+        } catch (_: JsonException) {
+            unprocessedResponse()
         } catch (_: NullPointerException) {
             unprocessedResponse()
         }
@@ -159,14 +154,12 @@ class ActivityRegistration : AppCompatActivity() {
     private fun alreadyRegistered(body: String) {
         val data = JsonIterator.deserialize(
             body,
-            ResponsePackets.AC.Registration.AlreadyRegistered::class.java
+            Packets.Registration.AlreadyRegistered::class.java
         )
         runOnUiThread {
             responseStatusRegistration.text = when (data.target) {
-                "name" ->
-                    getString(R.string.registration_widgets_responseStatus_usernameAlreadyRegistered)
-                "contact" ->
-                    getString(R.string.registration_widgets_responseStatus_contactAlreadyRegistered)
+                "name" -> getString(R.string.registration_widgets_responseStatus_usernameAlreadyRegistered)
+                "contact" -> getString(R.string.registration_widgets_responseStatus_contactAlreadyRegistered)
                 else -> getString(R.string.authorization_widgets_responseStatus_responseError)
             }
         }
@@ -191,15 +184,12 @@ class ActivityRegistration : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun notValid(body: String) { // 400
         val data =
-            JsonIterator.deserialize(body, ResponsePackets.AC.Registration.NotValid::class.java)
+            JsonIterator.deserialize(body, Packets.Registration.NotValid::class.java)
         runOnUiThread {
             responseStatusRegistration.text = when (data.target) {
                 "name" -> getString(R.string.registration_widgets_responseStatus_notValidName)
-
                 "contact" -> getString(R.string.registration_widgets_responseStatus_notValidContact)
-
                 "password" -> getString(R.string.registration_widgets_responseStatus_notValidPassword)
-
                 else -> getString(R.string.authorization_widgets_responseStatus_responseError)
             }
         }
@@ -214,33 +204,24 @@ class ActivityRegistration : AppCompatActivity() {
     }
 
     private fun saveToken(id: Long, token: String) {
-        val accounts = mutableListOf<Helper.LocalAccount>()
+        val accounts = mutableListOf<LocalAccount>()
 
         for (data in tokensFile.readText().split(";")) {
             try {
                 accounts.add(
-                    JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
+                    JsonIterator.deserialize(data, LocalAccount::class.java)
                         .apply { main = false })
             } catch (_: JsonException) {
                 continue
             }
-
-            Log.d(
-                "TOKEN TO SAVE",
-                JsonStream.serialize(
-                    JsonIterator.deserialize(
-                        data,
-                        Helper.LocalAccount::class.java
-                    )
-                )
-            )
         }
 
-        accounts.add(Helper.constructLocalAccount(token, id))
+        accounts.add(LocalAccount.constructLocalAccount(token, id))
 
         val writableAccounts = mutableListOf<String>()
 
         for (account in accounts) {
+            if ((account.id == id) and !account.main) continue
             writableAccounts.add(JsonStream.serialize(account))
         }
 

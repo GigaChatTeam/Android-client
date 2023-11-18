@@ -2,10 +2,10 @@ package com.gct.cl.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.gct.cl.android.authorization.ActivityAuthorization
+import com.gct.cl.android.main.ActivityMain
 import com.jsoniter.JsonIterator
-import com.jsoniter.output.JsonStream
 import com.jsoniter.spi.JsonException
 import java.io.File
 
@@ -41,15 +41,12 @@ class Loader : AppCompatActivity() {
 
             try {
                 account = JsonIterator.deserialize(data, Helper.LocalAccount::class.java)
-            }
-            catch (_: JsonException) {
+            } catch (_: JsonException) {
                 continue
             }
 
-            Log.d("TOKEN FROM TOKENS FILE", JsonStream.serialize(account))
             if (account?.main == true) return account
         }
-
         return null
     }
 }

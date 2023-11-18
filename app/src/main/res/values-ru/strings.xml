@@ -5,7 +5,7 @@
     <string name="authorization_widgets_showPassword_disable">Скрыть пароль</string>
     <string name="authorization_widgets_inputLogin">Введите логин</string>
     <string name="authorization_widgets_inputPassword">Введите пароль</string>
-    <string name="authorization_widgets_responseStatus_connectionRefused">Сервер не отвечает.\\nПожалуйста, повторите попытку позднее.</string>
+    <string name="authorization_widgets_responseStatus_connectionRefused">Сервер не отвечает. Пожалуйста, повторите попытку позднее.</string>
     <string name="authorization_widgets_responseStatus_userNotFound">Неверный логин или пароль</string>
     <string name="authorization_widgets_responseStatus_notValidLogin">Неверный логин. Пожалуйста, проверьте ввод.</string>
     <string name="authorization_widgets_input_notValidPassword">Неверный пароль. Пожалуйста, проверьте ввод.</string>
@@ -26,4 +26,8 @@
     <string name="registration_widgets_responseStatus_notValidContact">E-mail должен содержать символ \"@\"</string>
     <string name="registration_widgets_responseStatus_notValidName">Плохой логни. Пожалуйста, смените его.</string>
     <string name="registration_widgets_responseStatus_contactAlreadyRegistered">Номер/E-mail уже зарегистрирован</string>
+    <string name="pages_titles_notifications">Уведомления</string>
+    <string name="pages_titles_feed">Лента</string>
+    <string name="pages_titles_channels">Каналы</string>
+    <string name="pages_titles_settings">Настройки</string>
 </resources>

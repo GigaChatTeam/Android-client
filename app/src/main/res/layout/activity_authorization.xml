@@ -4,97 +4,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityAuthorization">
+    tools:context=".authorization.ActivityAuthorization">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/activityAuthorization_widgets_inputLogin"
-        android:layout_width="254dp"
-        android:layout_height="49dp"
+        android:layout_width="256dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="256dp"
         android:hint="@string/authorization_widgets_inputLogin"
-        app:layout_constraintBottom_toTopOf="@+id/activityAuthorization_widgets_inputPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.935" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/activityAuthorization_widgets_inputPassword"
-        android:layout_width="254dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="400dp"
+        android:layout_width="256dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
         android:hint="@string/authorization_widgets_inputPassword"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputLogin" />
 
     <TextView
         android:id="@+id/activityAuthorization_widgets_responseStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/activityAuthorization_widgets_login"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
-
-    <Button
-        android:id="@+id/activityAuthorization_widgets_login"
-        android:layout_width="109dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="36dp"
-        android:onClick="authorize"
-        android:text="@string/authorization_widgets_logIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
-
-    <CheckBox
-        android:id="@+id/activityAuthorization_widgets_showPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="@string/authorization_widgets_showPassword_enable"
-        app:layout_constraintEnd_toEndOf="@+id/activityAuthorization_widgets_inputPassword"
-        app:layout_constraintHorizontal_bias="0.928"
-        app:layout_constraintStart_toEndOf="@+id/activityAuthorization_widgets_login"
-        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword" />
-
-    <TextView
-        android:id="@+id/debugView"
-        android:layout_width="256dp"
-        android:layout_height="128dp"
-        android:layout_marginBottom="44dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/goToRegister"
         android:layout_width="242dp"
         android:layout_height="54dp"
+        android:layout_marginBottom="192dp"
+        android:onClick="register"
         android:text="@string/authorization_widgets_register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.734" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/noAccount"
-        android:layout_width="224dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="7dp"
-        android:text="@string/authorization_widgets_no_account"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/goToRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.417"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.997" />
+        app:layout_constraintTop_toBottomOf="@+id/activityAuthorization_widgets_inputPassword">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/activityAuthorization_widgets_login"
+            android:layout_width="128dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="36dp"
+            android:onClick="authorize"
+            android:text="@string/authorization_widgets_logIn" />
+
+        <CheckBox
+            android:id="@+id/activityAuthorization_widgets_showPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/authorization_widgets_showPassword_enable" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
